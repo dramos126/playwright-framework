@@ -10,17 +10,17 @@ export class UserHelper {
     token = ''
 
 
-    async registerUser({ name = this.userName, email = this.userEmail, password = this.userPassword, expectedStatus = 201 } = {}): Promise<any> {
+    async registerUser({ name = this.userName, email = this.userEmail, password = this.userPassword, expectedStatus = 201 } = {}) {
         const userResponse = await this.request.post('/notes/api/users/register', {
             data: { name, email, password }
         })
 
         expect(userResponse.status()).toBe(expectedStatus)
-        return userResponse;
+        return userResponse
     }
 
 
-    async login({ email = this.userEmail, password = this.userPassword, expectedStatus = 200 } = {}): Promise<any> {
+    async login({ email = this.userEmail, password = this.userPassword, expectedStatus = 200 } = {}) {
         const response = await this.request.post('/notes/api/users/login', {
             data: { email, password }
         });
@@ -31,16 +31,35 @@ export class UserHelper {
             const responseBody = await response.json()
             this.token = responseBody.data.token
         }
-
-        return response
     }
 
-    async logout({ token = this.token, authHeader = 'x-auth-token', expectedStatus = 200 } = {}): Promise<any> {
+    async registerAndLogin() {
+        const userResponse = await this.registerUser()
+        await this.login()
+        return userResponse
+    }
+
+    async logout({ token = this.token, expectedStatus = 200 } = {}) {
         const response = await this.request.delete('/notes/api/users/logout', {
-            headers: { [authHeader]: token }
+            headers: { 'x-auth-token': token }
         })
 
         expect(response.status()).toBe(expectedStatus)
-        return response
+
+        if (expectedStatus === 200) {
+            this.token = ''
+        }
+    }
+
+    async deleteAccount({ token = this.token, expectedStatus = 200 } = {}) {
+        const response = await this.request.delete('/notes/api/users/delete-account', {
+            headers: { 'x-auth-token': token }
+        })
+
+        expect(response.status()).toBe(expectedStatus)
+
+        if (expectedStatus === 200) {
+            this.token = ''
+        }
     }
 }

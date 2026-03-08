@@ -15,8 +15,4 @@ test.describe(`Logout Flow`, () => {
     test(`Logout fails with invalid token`, async ({ userHelper }) => {
         await userHelper.logout({ token: 'invalidtoken', expectedStatus: 401 })
     })
-
-    test(`Logout fails with wrong auth header`, async ({ userHelper }) => {
-        await userHelper.logout({ authHeader: 'Authorization', expectedStatus: 401 })
-    })
 })

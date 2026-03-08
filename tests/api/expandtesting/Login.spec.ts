@@ -9,12 +9,16 @@ test.describe(`Login Flow`, () => {
         createdUserEmail = responseBody.data.email
     })
 
+    test.beforeEach('Register a user', async ({ userHelper }) => {
+        await userHelper.registerUser()
+    })
+
     test(`Login with valid credentials`, async ({ userHelper }) => {
-        await userHelper.login({ email: createdUserEmail })
+        await userHelper.login()
     })
 
     test(`Login fails with wrong password`, async ({ userHelper }) => {
-        await userHelper.login({ email: createdUserEmail, password: 'WrongPassword123', expectedStatus: 401 })
+        await userHelper.login({ password: 'WrongPassword123', expectedStatus: 401 })
     })
 
     test(`Login fails with non-existent email`, async ({ userHelper }) => {
