@@ -8,7 +8,6 @@ test.describe(`Login Flow`, () => {
         createdUserEmail = responseBody.data.email
     })
 
-
     test(`Login with valid credentials`, async ({ userHelper }) => {
         await userHelper.login({ email: createdUserEmail })
     })
