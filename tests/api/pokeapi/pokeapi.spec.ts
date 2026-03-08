@@ -7,7 +7,7 @@ test('Requesting an invalid pokemon returns 404', async ({ request }) => {
 })
 
 test('Get eevee evolution tree', async ({ request }) => {
-  const eevee = await getJson(request, '/v2/pokemon/eevee')
+  const eevee = await getJson(request, '/api/v2/pokemon/eevee')
   const speciesURL = await getJson(request, eevee.species.url)
   const evolutionURL = speciesURL.evolution_chain.url
   const evolutionChain = await getJson(request, evolutionURL)
@@ -15,14 +15,14 @@ test('Get eevee evolution tree', async ({ request }) => {
 })
 
 test('Get evolution tree for a pokemon with no evolutions', async ({ request }) => {
-  const ditto = await getJson(request, '/v2/pokemon-species/ditto')
+  const ditto = await getJson(request, '/api/v2/pokemon-species/ditto')
   const evolutionURL = ditto.evolution_chain.url
   const evolutionChain = await getJson(request, evolutionURL)
   expect(evolutionChain.chain.evolves_to.length).toBe(0)
 })
 
 test('Items repsponse matches schema', async ({ request }) => {
-  const items = await getJson(request, '/v2/item/master-ball')
+  const items = await getJson(request, '/api/v2/item/master-ball')
   expect(items).toMatchObject({
     id: expect.any(Number),
     name: expect.any(String),

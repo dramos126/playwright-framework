@@ -11,7 +11,7 @@ export default defineConfig({
     {
       name: 'pokeapi',
       testMatch: '**/api/pokeapi/**/*.spec.ts',
-      use: { baseURL: 'https://pokeapi.co/api' },
+      use: { baseURL: 'https://pokeapi.co' },
     },
   ],
 })
